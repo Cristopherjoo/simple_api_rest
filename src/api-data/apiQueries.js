@@ -50,12 +50,12 @@ export const updateUsers = async (name, email, password, image, id) =>{
 }
 
 export const deleteUsersById = async (id) => {
-  let users = await pool.query("DELETE FROM users WHERE id =$1, RETURNING id, name, email, image ", [id])
-  return users.rows
+  let users = await pool.query("DELETE FROM usuarios WHERE id =$1 RETURNING id, nombre, email, imagen ", [id]);
+  return users.rows;
 }
 
 export const usersLogin = async (email, password) => {
-  let users = await pool.query("SELECT id, name, email  FROM users WHERE email =$1, AND password =$2", [email, password])
+  let users = await pool.query("SELECT id, name, email  FROM users WHERE email =$1 AND password =$2", [email, password])
   return users.rows
 }
 
@@ -65,7 +65,7 @@ export const getProducts = async () => {
 }
 
 export const getProductsById = async (id) => {
-  let products = await pool.query("SELECT id, name, price, stock FROM productos WHERE id = $1", [id]);
+  let products = await pool.query("SELECT id, name, price, stock FROM products WHERE id = $1", [id]);
   return products.rows
 }
 
