@@ -1,8 +1,8 @@
-import dotenv from 'dotenv';
-dotenv.config();
+import dotenv from 'dotenv'
+dotenv.config()
 
-import pkg from 'pg';
-const { Pool } = pkg;
+import pkg from 'pg'
+const { Pool } = pkg
 
 const pool = new Pool({
   host: 'localhost',
@@ -13,21 +13,21 @@ const pool = new Pool({
   max: 5,
   idleTimeoutMillis: 5000,
   connectionTimeoutMillis: 2000,
-});
+})
 
 export const getUsers = async () => {
   try {    
-    let users = await pool.query("SELECT id, name, email, image FROM users");
-    return users.rows;
+    let users = await pool.query("SELECT id, name, email, image FROM users")
+    return users.rows
   } catch (error) {
-    console.error('Error al ejecutar la consulta:', error);
-    throw error;
+    console.error('Error al ejecutar la consulta:', error)
+    throw error
   }
-};
+}
 
 export const getUsersById = async (id) => {
   try {       
-    let users = await pool.query("SELECT name, email, image FROM users WHERE id =$1" [id]);
+    let users = await pool.query("SELECT name, email, image FROM users WHERE id =$1", [id]);
     return users.rows;
   } catch (error) {
     console.error('Error al ejecutar la consulta:', error);
@@ -46,7 +46,7 @@ export const addUsers = async (name, email, password, image) => {
 export const updateUsers = async (name, email, password, image, id) =>{
   let query =`
     UPDATE users SET name = $1, email = $2, password = $3, image = $4 where id = $5 RETURNING id, name, email, image`
-    let users = await pool.query(query, [nombre, email, password, imagen, id])
+    let users = await pool.query(query, [name, email, password, image, id])
 }
 
 export const deleteUsersById = async (id) => {
@@ -64,15 +64,15 @@ export const getProducts = async () => {
   return products.rows
 }
 
-export const getProductsPorId = async (id) => {
+export const getProductsById = async (id) => {
   let products = await pool.query("SELECT id, name, price, stock FROM productos WHERE id = $1", [id]);
   return products.rows
 }
 
-export const addProduct = async (name, description, price, stock, image) => {
+export const addProducts = async (name, description, price, stock, image) => {
   let query =`
     INSERT INTO products (name, description, price, stock, image)
     values($1, $2, $3, $4, $5) RETURNING *`
-  let product = await pool.query(query, [name, description, precio, stock, image])
-  return product.rows
+  let products = await pool.query(query, [name, description, price, stock, image])
+  return products.rows
 }
